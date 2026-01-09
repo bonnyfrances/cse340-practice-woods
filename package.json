@@ -1,0 +1,20 @@
+{
+      "name": "cse340-practice-woods",
+      "version": "1.0.0",
+      "description": "",
+      "dependencies": {
+            "express": "^5.2.1"
+      },
+      "main": "index.js",
+      "scripts": {
+            "start": "node server.js"
+      },
+      "keywords": [],
+      "author": "",
+      "license": "ISC",
+      "packageManager": "pnpm@10.27.0",
+      "type": "module",
+      "devDependencies": {
+            "nodemon": "^3.1.11"
+      }
+}
