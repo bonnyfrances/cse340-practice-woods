@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { addDemoHeaders } from '../middleware/demo/headers.js';
 import { catalogPage, courseDetailPage, departmentsPage } from './catalog/catalog.js';
+import { facultyListPage, facultyDetailPage } from './faculty/faculty.js';
 import { homePage, aboutPage, demoPage, testErrorPage } from './index.js';
 
 // Create a new router instance
@@ -16,6 +17,10 @@ router.get('/catalog/:courseId', courseDetailPage);
 
 // Department page route
 router.get('/departments', departmentsPage);
+
+// Faculty routes
+router.get('/faculty', facultyListPage);
+router.get('/faculty/:facultyId', facultyDetailPage);
 
 // Demo page with special middleware
 router.get('/demo', addDemoHeaders, demoPage);

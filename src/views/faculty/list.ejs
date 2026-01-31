@@ -1,0 +1,20 @@
+<%- include('../partials/header') %>
+<main>
+    <h1>Faculty List</h1>
+    <p>Check out our faculty and click on any of them to see details.</p>
+
+    <div class="faculty-list">
+        <div class="sort-options">
+                <span>Sort by: </span>
+                <a href="/faculty?sort=name" class="<%= currentSort === 'name' ? 'active' : '' %>">Name</a>
+                <a href="/faculty?sort=department" class="<%= currentSort === 'department' ? 'active' : '' %>">Department</a>
+                <a href="/faculty?sort=title" class="<%= currentSort === 'title' ? 'active' : '' %>">Title</a>
+            </div>
+        <ul class="instructor">
+            <% Object.values(faculty.faculty).forEach(instructor => {  %>
+                <li><a href="/faculty/<%= instructor.id %>"><%= instructor.name %> - <%= instructor.title %>, <%= instructor.department %></a></li>
+            <% }); %>
+        </ul>
+    </div>
+</main>
+<%- include('../partials/footer') %>

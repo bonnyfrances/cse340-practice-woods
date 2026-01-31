@@ -1,0 +1,18 @@
+
+
+.instructor {
+    padding-left: 0;
+
+    li {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1.5rem;
+        background: #fff;
+        transition: box-shadow 0.2s ease;
+        list-style: none;
+
+        &:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    }
+}

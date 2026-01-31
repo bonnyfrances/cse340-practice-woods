@@ -1,0 +1,18 @@
+<%- include('../partials/header') %>
+<main>
+    <h1>Course Catalog</h1>
+    <p>Browse our available courses and click on any course to see detailed information including available sections and instructors.</p>
+
+    <div class="course-list">
+            <div class="course-card">
+                <h3><a href="/catalog/<%= facultyMember.id %>"><%= facultyMember.name %></a></h3>
+                <p class="course-id"><%= facultyMember.title %></p>
+                <p class="course-description"><%= facultyMember.department %></p>
+                <p class="course-description"><%= facultyMember.office %></p>
+                <p class="course-description"><%= facultyMember.phone %></p>
+                <p class="course-description"><%= facultyMember.email %></p>
+            </div>
+    </div>
+    <p><a href="/faculty">Back to Faculty List</a></p>
+</main>
+<%- include('../partials/footer') %>
