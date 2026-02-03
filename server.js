@@ -6,6 +6,9 @@ import { fileURLToPath } from 'url';
 import routes from './src/controllers/routes.js';
 import { addLocalVariables } from './src/middleware/global.js';
 
+// import database connection components
+import { setupDatabase, testConnection } from './src/models/setup.js';
+
 /**
  * Server configuration
  */
@@ -13,6 +16,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3000;
+
+
 
 /**
  * Setup Express Server
@@ -102,6 +107,8 @@ if (NODE_ENV.includes('dev')) {
 /**
  * Start Server
  */
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+    await setupDatabase();
+    await testConnection();
     console.log(`Server is running on http://127.0.0.1:${PORT}`);
 });

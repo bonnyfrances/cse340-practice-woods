@@ -11,8 +11,8 @@
                 <a href="/faculty?sort=title" class="<%= currentSort === 'title' ? 'active' : '' %>">Title</a>
             </div>
         <ul class="instructor">
-            <% Object.values(faculty.faculty).forEach(instructor => {  %>
-                <li><a href="/faculty/<%= instructor.id %>"><%= instructor.name %> - <%= instructor.title %>, <%= instructor.department %></a></li>
+            <% Object.values(faculty).forEach(instructor => {  %>
+                <li><a href="/faculty/<%= instructor.slug %>"><%= instructor.firstName %> <%= instructor.lastName %> - <%= instructor.title %>, <%= instructor.department %></a></li>
             <% }); %>
         </ul>
     </div>
