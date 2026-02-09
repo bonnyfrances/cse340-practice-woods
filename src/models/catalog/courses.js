@@ -74,6 +74,8 @@ const getCourse = async (identifier, identifierType = 'id') => {
     if (result.rows.length === 0) return {};
     
     const course = result.rows[0];
+
+
     return {
         id: course.id,
         courseCode: course.course_code,

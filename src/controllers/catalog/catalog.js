@@ -7,7 +7,7 @@ const catalogPage = async (req, res) => {
     // Model functions are async, so we must await them
     const courses = await getAllCourses();
     
-    res.render('catalog', {
+    res.render('catalog/list', {
         title: 'Course Catalog',
         courses: courses
     });
@@ -15,6 +15,7 @@ const catalogPage = async (req, res) => {
 
 // Route handler for individual course detail pages
 const courseDetailPage = async (req, res, next) => {
+ 
     const courseSlug = req.params.slugId;
     
     // Model functions are async, so we must await them
@@ -34,12 +35,12 @@ const courseDetailPage = async (req, res, next) => {
     const sections = await getSectionsByCourseSlug(courseSlug, sortBy);
 
     if (Object.keys(sections).length === 0) {
-        const err = new Error(`Course ${courseSlug} not found`);
+        const err = new Error(`Sections for ${courseSlug} not found`);
         err.status = 404;
         return next(err);
     }
-    
-    res.render('course-detail', {
+
+    res.render('catalog/detail', {
         title: `${course.courseCode} - ${course.name}`,
         course: course,
         sections: sections,
