@@ -59,6 +59,8 @@ const processRegistration = async (req, res) => {
     // Extract validated data
     const { name, email, password } = req.body;
 
+    console.log(password)
+
     try {
         // Check if email already exists in database
         const doesEmailExist = await emailExists(email);
@@ -70,13 +72,12 @@ const processRegistration = async (req, res) => {
         }
 
         // Hash the password before saving to database
-        const hashedPassword = bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         // Save user to database with hashed password
         await saveUser(name, email, hashedPassword);
 
-        console.log('User registered successfully');
-         res.redirect('/register/list');
+        res.redirect('/register/list');
     } catch (error) {
         console.error('Error saving user:', error);
         res.redirect('/register');
