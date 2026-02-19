@@ -22,10 +22,12 @@ const handleContactSubmission = async (req, res) => {
     // Check for validation errors
     const errors = validationResult(req);
 
+    // Inside your validation error check
     if (!errors.isEmpty()) {
-        // Log validation errors for developer debugging
-        console.error('Validation errors:', errors.array());
-        // Redirect back to form without saving
+        // Store each validation error as a separate flash message
+        errors.array().forEach(error => {
+            req.flash('error', error.msg);
+        });
         return res.redirect('/contact');
     }
 
@@ -35,11 +37,12 @@ const handleContactSubmission = async (req, res) => {
     try {
         // Save to database
         await createContactForm(subject, message);
-        console.log('Contact form submitted successfully');
+        req.flash('success', 'Thank you for contacting us! We will respond soon.');        // console.log('Contact form submitted successfully');
         // Redirect to responses page on success
-        res.redirect('/contact/responses');
+        res.redirect('/contact');
     } catch (error) {
         console.error('Error saving contact form:', error);
+        req.flash('error', 'Unable to submit your message. Please try again later.');        // console.error('Error saving contact form:', error);
         res.redirect('/contact');
     }
 };
@@ -53,6 +56,7 @@ const showContactResponses = async (req, res) => {
     try {
         contactForms = await getAllContactForms();
     } catch (error) {
+        req.flash('error', 'Error retrieving contact forms');
         console.error('Error retrieving contact forms:', error);
     }
 

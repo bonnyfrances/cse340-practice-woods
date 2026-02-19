@@ -49,17 +49,17 @@ const processRegistration = async (req, res) => {
     // Check for validation errors
     const errors = validationResult(req);
 
+    // Inside your validation error check
     if (!errors.isEmpty()) {
-         // Log validation errors for developer debugging
-        console.error('Validation errors:', errors.array());
-        // Redirect back to form without saving
+        // Store each validation error as a separate flash message
+        errors.array().forEach(error => {
+            req.flash('error', error.msg);
+        });
         return res.redirect('/register');
     }
 
     // Extract validated data
     const { name, email, password } = req.body;
-
-    console.log(password)
 
     try {
         // Check if email already exists in database
@@ -67,7 +67,7 @@ const processRegistration = async (req, res) => {
 
         // if email exists, redirect user back to registration form
         if (doesEmailExist) {
-            console.log("Email already registered");
+            req.flash('warning', 'Email already exists in system. Please use a unique email address.');            
             return res.redirect("/register");
         }
 
@@ -76,12 +76,20 @@ const processRegistration = async (req, res) => {
 
         // Save user to database with hashed password
         await saveUser(name, email, hashedPassword);
+        req.flash('success', 'You successfully registered, great job!');  
 
-        res.redirect('/register/list');
+        // const user = await saveUser(name, email, hashedPassword);
+        // if (!empty(user)) {
+        //     req.flash('success', 'You successfully registered, great job!');  
+        // } else {
+        //     req.flash('error', 'Could not save user, please try again.');
+        // }
+        
     } catch (error) {
-        console.error('Error saving user:', error);
-        res.redirect('/register');
+        req.flash('error', 'Could not save user, please try again.');
+        console.error('Could not save user:', error);
     }
+    res.redirect('/register');
 };
 
 /**
@@ -94,6 +102,7 @@ const showAllUsers = async (req, res) => {
     try {
         users = await getAllUsers();
     } catch (error) {
+        req.flash('error', 'Error retrieving users');
         console.error('Error retrieving users:', error);
     }
 

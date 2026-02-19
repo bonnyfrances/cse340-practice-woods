@@ -35,10 +35,12 @@ const processLogin = async (req, res) => {
     // Check for validation errors
     const errors = validationResult(req);
 
+    // Inside your validation error check
     if (!errors.isEmpty()) {
-        // Log validation errors for developer debugging
-        console.error('Validation errors:', errors.array());
-        // Redirect back to form without saving
+        // Store each validation error as a separate flash message
+        errors.array().forEach(error => {
+            req.flash('error', error.msg);
+        });
         return res.redirect('/login');
     }
 
@@ -50,14 +52,14 @@ const processLogin = async (req, res) => {
 
          // if no user exists, redirect user back to registration form
         if (!user) {
-            console.log("User not found");
+            req.flash('error', 'Invalid email or password')
             return res.redirect("/login");
         }
 
         const passwordVerification = await verifyPassword(password, user.password);
         // TODO: Verify password using verifyPassword(password, user.password)
         if (!passwordVerification) {
-            console.log("Invalid password");
+            req.flash('error', 'Invalid email or password');
             return res.redirect("/login");
         }
 
@@ -65,10 +67,10 @@ const processLogin = async (req, res) => {
         delete user.password;
 
         req.session.user = user;
-        console.log(req.session.user);
         res.redirect("/dashboard");
 
     } catch (error) {
+        req.flash("error", "Error logging in");
         console.error('Error logging in:', error);
         res.redirect('/login');
     }
@@ -113,6 +115,7 @@ const processLogout = (req, res) => {
         res.clearCookie('connect.sid');
 
         // Redirect the user to the home page
+        req.flash("success", "You have succesfully logged out. See you next time!");
         res.redirect('/');
     });
 };

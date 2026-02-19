@@ -15,6 +15,8 @@ import connectPgSimple from 'connect-pg-simple';
 import { caCert } from './src/models/db.js';
 import { startSessionCleanup } from './src/utils/session-cleanup.js';
 
+import flash from './src/middleware/flash.js';
+
 /**
  * Server configuration
  */
@@ -22,8 +24,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3000;
-
-
 
 /**
  * Setup Express Server
@@ -76,6 +76,10 @@ startSessionCleanup();
  * Global Middleware
  */
 app.use(addLocalVariables);
+
+// Flash message middleware (must come after session and global middleware)
+app.use(flash);
+
 
 /**
  * Routes
